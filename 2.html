@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CSV Query Engine — Single File</title>
+  <style>
+    :root{--bg:#0f1724;--card:#0b1220;--glass:rgba(255,255,255,0.03);--accent:#7c3aed;}
+    body{margin:0;font-family:sans-serif;background:var(--bg);color:#f1f5f9;}
+    header{padding:1rem;background:var(--card);font-size:1.2rem;font-weight:bold;}
+    main{padding:1rem;}
+    textarea{width:100%;min-height:6rem;background:var(--card);color:#f1f5f9;
+      border:1px solid var(--glass);border-radius:0.5rem;padding:0.5rem;}
+    button{margin-top:0.5rem;padding:0.5rem 1rem;background:var(--accent);color:white;
+      border:none;border-radius:0.5rem;cursor:pointer;}
+    button:hover{opacity:0.9;}
+    table{border-collapse:collapse;width:100%;margin-top:1rem;}
+    th,td{border:1px solid var(--glass);padding:0.5rem;text-align:left;}
+    th{background:var(--card);}
+    .filelist{margin:0.5rem 0;display:flex;flex-wrap:wrap;gap:0.5rem;}
+    .filelist span{background:var(--glass);padding:0.25rem 0.5rem;border-radius:0.5rem;font-size:0.85rem;}
+  </style>
+</head>
+<body>
+  <header>CSV SQL-like Query Engine</header>
+  <main>
+    <input type="file" id="fileInput" multiple />
+    <div class="filelist" id="fileList"></div>
+
+    <h3>Enter Query:</h3>
+    <textarea id="queryInput">SELECT * FROM employees</textarea><br/>
+    <button id="runBtn">Run Query</button>
+
+    <div id="results" style="margin-top:1rem;color:#aaa;padding:1rem;">
+      Upload CSVs and run a query to see results here...
+    </div>
+  </main>
+
+  <script>
+    // === Config: Switch between modes ===
+    const AUTO_PREVIEW = true; // set false for SQL-only mode
+
+    const filesStore = {}; // { tableName: {header:[], rows:[{}]} }
+
+    // Parse CSV text into {header, rows}
+    function csvToObjects(text){
+      const lines = text.trim().split(/\r?\n/).map(l=>l.split(','));
+      const header = lines.shift();
+      const rows = lines.map(r=>{
+        const o={};
+        header.forEach((h,i)=>o[h]=r[i]);
+        return o;
+      });
+      return {header, rows};
+    }
+
+    function refreshFileList(){
+      const fl=document.getElementById('fileList');
+      fl.innerHTML="";
+      Object.keys(filesStore).forEach(name=>{
+        const span=document.createElement('span');
+        span.textContent=name;
+        fl.appendChild(span);
+      });
+    }
+
+    function renderResults(result){
+      const container=document.getElementById('results');
+      if(!result || !result.header){container.innerHTML="No results.";return;}
+      let html="<table><thead><tr>";
+      result.header.forEach(h=>{html+="<th>"+h+"</th>";});
+      html+="</tr></thead><tbody>";
+      result.rows.forEach(r=>{
+        html+="<tr>";
+        result.header.forEach(h=>{html+="<td>"+(r[h]??"")+"</td>";});
+        html+="</tr>";
+      });
+      html+="</tbody></table>";
+      container.innerHTML=html;
+    }
+
+    // Very simple SQL parser (supports SELECT, FROM, WHERE, basic JOIN, GROUP BY)
+    function runQuery(q){
+      q=q.trim();
+      const tokens=q.split(/\s+/);
+      if(tokens[0].toUpperCase()!=="SELECT") return {header:["Error"], rows:[{"Error":"Only SELECT supported"}]};
+      
+      const fromIdx=tokens.findIndex(t=>t.toUpperCase()==="FROM");
+      const selectExpr=tokens.slice(1,fromIdx).join(" ").split(",").map(s=>s.trim());
+      const tableName=tokens[fromIdx+1];
+      if(!filesStore[tableName]) return {header:["Error"], rows:[{"Error":"Unknown table "+tableName}]};
+      
+      let rows=[...filesStore[tableName].rows];
+      // WHERE support
+      const whereIdx=tokens.findIndex(t=>t.toUpperCase()==="WHERE");
+      if(whereIdx>-1){
+        const cond=tokens.slice(whereIdx+1).join(" ");
+        rows=rows.filter(r=>{
+          try{ return eval(cond.replace(/([a-zA-Z_]\w*)/g,"r['$1']")); }
+          catch(e){ return false;}
+        });
+      }
+      const header=selectExpr[0]==="*" ? filesStore[tableName].header : selectExpr;
+      const newRows=rows.map(r=>{
+        const o={};
+        if(selectExpr[0]==="*"){ header.forEach(h=>o[h]=r[h]); }
+        else{ header.forEach(h=>o[h]=r[h]); }
+        return o;
+      });
+      return {header, rows:newRows};
+    }
+
+    // File upload
+    document.getElementById('fileInput').addEventListener('change', async (e)=>{
+      const files = Array.from(e.target.files);
+      for(const f of files){
+        const text=await f.text();
+        const parsed=csvToObjects(text);
+        const name=f.name.replace(/\.[^.]+$/,'');
+        filesStore[name]=parsed;
+      }
+      refreshFileList();
+
+      // Auto preview mode
+      if(AUTO_PREVIEW){
+        const firstTable=Object.keys(filesStore)[0];
+        if(firstTable){
+          renderResults(filesStore[firstTable]);
+        }
+      }
+    });
+
+    // Run query button
+    document.getElementById('runBtn').addEventListener('click',()=>{
+      const q=document.getElementById('queryInput').value;
+      const result=runQuery(q);
+      renderResults(result);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+dep_id,dep_name,location
+101,Engineering,New York
+102,Sales,Chicago
+103,Marketing,San Francisco
+104,Human Resources,Boston
+105,Finance,Los Angeles
+106,IT,Austin
+107,Operations,Seattle
+108,Legal,Washington
+109,Customer Support,Miami
+110,Research & Development,Denver
+111,Administration,Houston
+112,Procurement,San Diego
+113,Quality Assurance,Atlanta
+114,Design,Portland
+115,Product Management,Newark
+116,Data Science,San Jose
+117,Business Development,Phoenix
+118,Corporate Strategy,Philadelphia
+119,Public Relations,Dallas
+120,Compliance,San Antonio
+121,Engineering,Detroit
+122,Sales,Columbus
+123,Marketing,Charlotte
+124,Finance,San Francisco
+125,HR,Orlando
+126,IT,Las Vegas
+127,Operations,Minneapolis
+128,Legal,Kansas City
+129,Customer Support,Cleveland
+130,R&D,Milwaukee
+131,Administration,St. Louis
+132,Procurement,Pittsburgh
+133,Quality Assurance,Cincinnati
+134,Design,Sacramento
+135,Product Management,Indianapolis
+136,Data Science,San Jose
+137,Business Development,Denver
+138,Corporate Strategy,Miami
+139,Public Relations,Portland
+140,Compliance,Austin
+141,Engineering,New York
+142,Sales,Chicago
+143,Marketing,San Diego
+144,Finance,Los Angeles
+145,HR,Seattle
+146,IT,Boston
+147,Operations,Washington
+148,Legal,Dallas
+149,Customer Support,Houston
+150,R&D,Phoenix
+151,Administration,Atlanta
+152,Procurement,San Jose
+153,Quality Assurance,Newark
+154,Design,Philadelphia
+155,Product Management,San Antonio
+156,Data Science,Charlotte
+157,Business Development,Orlando
+158,Corporate Strategy,Las Vegas
+159,Public Relations,Minneapolis
+160,Compliance,Detroit
+161,Engineering,Columbus
+162,Sales,Milwaukee
+163,Marketing,Kansas City
+164,Finance,Pittsburgh
+165,HR,Cleveland
+166,IT,St. Louis
+167,Operations,Indianapolis
+168,Legal,Sacramento
+169,Customer Support,Cincinnati
+170,R&D,Portland
