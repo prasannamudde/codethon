@@ -1,0 +1,54 @@
+
+SELECT name, salary FROM employees;
+SELECT name, department, salary FROM employees WHERE salary > 95000;
+SELECT id, name FROM employees WHERE department = 'HR';
+SELECT name, salary FROM employees WHERE department = 'Engineering' ORDER BY salary DESC;
+SELECT department, COUNT() FROM employees GROUP BY department;
+SELECT department, AVG(salary) FROM employees GROUP BY department;
+SELECT department, MAX(salary) FROM employees GROUP BY department;
+SELECT department, MIN(salary) FROM employees GROUP BY department;
+SELECT name, salary FROM employees WHERE salary BETWEEN 60000 AND 80000;
+SELECT name FROM employees WHERE name LIKE 'A%';
+SELECT id, name, salary FROM employees WHERE department = 'Finance';
+SELECT department, SUM(salary) FROM employees GROUP BY department;
+SELECT * FROM employees WHERE department = 'Sales';
+SELECT * FROM employees ORDER BY salary ASC;
+SELECT * FROM employees ORDER BY salary DESC;
+SELECT department, COUNT(), AVG(salary), MAX(salary), MIN(salary) FROM employees GROUP BY department;
+SELECT name, salary FROM employees WHERE department = 'Marketing' AND salary > 70000;
+SELECT name FROM employees WHERE department IN ('IT','Finance');
+SELECT id, name, salary FROM employees WHERE salary < 55000;
+
+
+departments
+
+SELECT dep_id, dep_name FROM departments;
+SELECT * FROM departments WHERE location = 'New York';
+SELECT * FROM departments WHERE dep_name = 'Engineering';
+SELECT dep_id, dep_name FROM departments WHERE location LIKE 'San%';
+SELECT * FROM departments WHERE dep_name IN ('Finance','HR');
+SELECT * FROM departments WHERE dep_id BETWEEN 120 AND 130;
+SELECT dep_name, location FROM departments ORDER BY dep_name ASC;
+SELECT dep_name, location FROM departments ORDER BY dep_id DESC;
+SELECT DISTINCT dep_name FROM departments;
+SELECT DISTINCT location FROM departments;
+SELECT COUNT(*) FROM departments;
+SELECT COUNT(DISTINCT location) FROM departments;
+SELECT dep_name FROM departments WHERE dep_name LIKE '%Development%';
+SELECT dep_name FROM departments WHERE dep_name LIKE '%Science%';
+SELECT dep_name, location FROM departments WHERE location = 'San Francisco';
+SELECT dep_id, dep_name FROM departments WHERE location IN ('Miami','Dallas');
+SELECT dep_name FROM departments WHERE dep_name LIKE 'C%';
+SELECT * FROM departments WHERE location LIKE '%ton';
+SELECT dep_name, location FROM departments WHERE dep_id > 150;
+SELECT dep_id, dep_name FROM departments WHERE dep_name = 'Legal';
+SELECT dep_name FROM departments WHERE location = 'Houston';
+SELECT dep_name FROM departments WHERE location IN ('Newark','Philadelphia');
+SELECT dep_id FROM departments WHERE dep_name LIKE '%Strategy%';
+SELECT * FROM departments ORDER BY location;
+SELECT dep_name, location FROM departments WHERE dep_name LIKE '%Relations%';
+SELECT dep_name FROM departments WHERE location = 'Las Vegas';
+SELECT * FROM departments WHERE dep_name LIKE 'Quality%';
+SELECT * FROM departments WHERE dep_name LIKE 'Product%';
+SELECT dep_id, location FROM departments WHERE dep_name = 'Operations';
+SELECT dep_name FROM departments WHERE dep_id = 140;
